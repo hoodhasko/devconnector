@@ -11,7 +11,7 @@ const {
 
 const User = require('../../models/User');
 
-//@route 	POST api/auth
+//@route 	POST api/users
 //@desc 	Register route
 //@access 	Public
 router.post('/', [
@@ -36,7 +36,7 @@ router.post('/', [
 		} = req.body;
 
 		try {
-			// See  if user exists
+			// See if user exists
 			let user = await User.findOne({
 				email
 			});
