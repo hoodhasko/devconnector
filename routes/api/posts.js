@@ -124,7 +124,7 @@ router.delete('/:post_id', auth, async (req, res) => {
 });
 
 //@route 	PUT api/posts/like/:post_id
-//@desc 	Like a post
+//@desc 	Like and unlike a post
 //@access 	Private
 
 router.put('/like/:post_id', auth, async (req, res) => {
@@ -133,7 +133,6 @@ router.put('/like/:post_id', auth, async (req, res) => {
 
 		// Check if the post has already been liked
 		if (post.likes.filter(like => like.user.toString() === req.user.id).length > 0) {
-			//const removeIndex = post.likes.map(like => like.user).indexOf(req.user.id);
 
 			post.likes.splice(post.likes.map(like => like.user).indexOf(req.user.id), 1);
 
