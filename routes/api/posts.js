@@ -41,7 +41,7 @@ router.post('/', [auth, [
 		res.json(post);
 	} catch (err) {
 		console.error(err.message);
-		res.status(500).json('Server Error');
+		res.status(500).send('Server Error');
 	}
 });
 
@@ -57,7 +57,7 @@ router.get('/', auth, async (req, res) => {
 		res.json(posts);
 	} catch (err) {
 		console.error(err.message);
-		res.status(500).json('Server Error');
+		res.status(500).send('Server Error');
 	}
 });
 
@@ -82,7 +82,7 @@ router.get('/:id', auth, async (req, res) => {
 				msg: 'Post not found'
 			});
 		}
-		res.status(500).json('Server Error');
+		res.status(500).send('Server Error');
 	}
 });
 
@@ -119,7 +119,45 @@ router.delete('/:post_id', auth, async (req, res) => {
 				msg: 'Post not found'
 			});
 		}
-		res.status(500).json('Server Error');
+		res.status(500).send('Server Error');
+	}
+});
+
+//@route 	PUT api/posts/like/:post_id
+//@desc 	Like a post
+//@access 	Private
+
+router.put('/like/:post_id', auth, async (req, res) => {
+	try {
+		const post = await Post.findById(req.params.post_id);
+
+		// Check if the post has already been liked
+		if (post.likes.filter(like => like.user.toString() === req.user.id).length > 0) {
+			//const removeIndex = post.likes.map(like => like.user).indexOf(req.user.id);
+
+			post.likes.splice(post.likes.map(like => like.user).indexOf(req.user.id), 1);
+
+			msg = 'Post unliked'
+		} else {
+			post.likes.unshift({
+				user: req.user.id
+			});
+
+			msg = 'Post liked'
+		}
+
+		await post.save();
+		res.json({
+			msg: msg
+		});
+	} catch (err) {
+		console.error(err.message);
+		if (err.kind === 'ObjectId') {
+			return res.status(404).json({
+				msg: 'Post not found'
+			});
+		}
+		res.status(500).send('Server Error');
 	}
 });
 
