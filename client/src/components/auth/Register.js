@@ -19,7 +19,7 @@ const Register = () => {
     if (password !== password2) {
       console.log('Passwords do not match');
     } else {
-      console.log(formData);
+      console.log('SUCCESS');
     }
   };
 
@@ -27,8 +27,7 @@ const Register = () => {
     <Fragment>
       <h1 className='large text-primary'>Sign Up</h1>
       <p className='lead'>
-        <i className='fas fa-user'></i>
-        Create Your Account
+        <i className='fas fa-user' /> Create Your Account
       </p>
       <form onSubmit={e => onSubmit(e)} className='form'>
         <div className='form-group'>
